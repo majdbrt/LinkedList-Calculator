@@ -1,5 +1,5 @@
 # LinkedList-Calculator
-A simple addition calculator that takes non-negative integer numbers as linked-lists and performs the desired mathematical operations. The resulting number is also a linked-list.
+A simple c++ addition calculator that takes non-negative integer numbers as linked-lists and performs the desired mathematical operations. The resulting number is also a linked-list.
 
 
 This program utilizes object-oriented programming.
