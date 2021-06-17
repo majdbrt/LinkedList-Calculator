@@ -14,3 +14,9 @@ The written linked-list class can perform the following operations:
 * Return the size/length of the linked-list.
 * Clear the linked-list by removing all nodes.
 * Travese the list until it reaches the ith node and return its respective value.
+
+The program is made of multiple files:
+* list.cpp: contains the Node class & List Class
+* main.cpp: contains the functions that perform the calculations + user interface.
+* list.h: the header file that links the .cpp files together.
+* makefile
