@@ -23,8 +23,8 @@ int main(){
     insertNumber(l2);
 
     List l3 = addNumber(l1, l2);
-    
-    cout << "The result is: ";
+
+    cout << "result = ";
     l3.printList();
     return 0;
 }
