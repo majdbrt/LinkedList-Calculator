@@ -1,166 +1,128 @@
-#include <iostream>
-#include <string>
+#include "list.h"
 
 using namespace std;
 
-struct node{
-    int val;
-    node* next;
+// inserNumber
+// takes user input and inserts the digits into linked-list backward. 
+//
+void insertNumber(List& head);
 
-};
+// addNumber
+// takes two linked-list of numbers and adds them resulting in a new linked-list.
+// the new linked-list is returned.
+//
+List addNumber(List& l1, List& l2);
 
-void push(node** head, int x){
-    if(*head == nullptr){
-        *head = new node();
-        (*head)->val = x;
-        (*head)->next = nullptr;
-        return;
-    }// if
+int main(){
 
-    node* newNode = new node();
-    newNode->val = x;
-    newNode->next = *head;
-    *head = newNode;
+
+    List l1;
+    List l2;
+
+    insertNumber(l1);
+    insertNumber(l2);
+
+    List l3 = addNumber(l1, l2);
+    
+    cout << "The result is: ";
+    l3.printList();
+    return 0;
 }
 
-void pushEnd(node** head, int x){
-    if(*head == nullptr){
-        *head = new node();
-        (*head)->val = x;
-        (*head)->next = nullptr;
-        return;
-    }// if
-
-    node* cur = *head;
-    while(cur->next != nullptr){
-        
-        cur = cur->next;
-    }
-
-    node* newNode = new node();
-    newNode->val = x;
-    newNode->next = nullptr;
-    cur->next = newNode;
-}
-
-void printList(node* head){
-    while(head != nullptr){
-        cout << head->val;
-        head = head->next;
-    }// while
-    cout << endl;
-}
-
-void insertNumber(node** head){
+void insertNumber(List& head){
     cout << "Enter a valid number: ";
     int number = 0;
     cin >> number;
     while(number!= 0){
         int digit = number % 10;
-        pushEnd(&(*head), digit);
+        head.pushEnd(digit);
         number = number/10;
-    }
-}
+    }// while
+}// insertNumber
 
-int sizeList(node* head){
-    int i = 0;
-    while(head != nullptr){
-        i++;
-        head = head->next;
-    }
-    return i;
-}
-
-node* addNumber(node** l1, node** l2){
-    node* l3 = nullptr;
-    int size1 = sizeList(*l1);
-    int size2 = sizeList(*l2);
-
-    node* cur1 = *l1;
-    node* cur2 = *l2;
+List addNumber(List& l1, List& l2){
+    List l3;
+    int size1 = l1.size();
+    int size2 = l2.size();
 
     if(size1 == size2){
         int sum = 0;
         int remainder = 0;
-        while(cur1 != nullptr){
-            sum = cur1->val + cur2->val;
-            sum = sum+ remainder;
-            if(sum - 10 >=0){
-                remainder = 1;
-                sum = sum - 10;
-            }
 
-            push(&l3, sum );
-            cur1 = cur1->next;
-            cur2 = cur2->next;
-        }// while
+        for(int i = 0; i < size1; i++){
+            sum = l1.ith(i) + l2.ith(i);
+            sum = sum + remainder;
+            if (sum - 10 >= 0){
+                remainder = sum/10;
+                sum = sum - 10;
+            }// if
+
+            l3.push(sum);
+
+        }// for
 
         if(remainder != 0){
-            push(&l3, remainder);
+            l3.push(remainder);
         }// if
     }// if
 
     else if( size1 > size2){
         int sum = 0;
         int remainder = 0;
+        int i = 0;
 
-        while(cur2 != nullptr){
-            sum = cur1->val + cur2->val;
-            sum = sum+ remainder;
+        for(i = 0; i < size2; i++){
+            sum = l1.ith(i) + l2.ith(i);
+            sum = sum + remainder;
+
             if(sum - 10 >=0){
-                remainder = 1;
+                remainder = sum/10;
                 sum = sum - 10;
-            }
+            }// if
+            l3.push(sum);
+        }// for
 
-            push(&l3, sum );
-            cur1 = cur1->next;
-            cur2 = cur2->next;
-        }// while
+        for(;i<size1; i++){
+            sum = l1.ith(i)+ remainder;
+            if(sum - 10 >=0){
+                remainder = sum/10;
+                sum = sum - 10;
+            }// if
+            l3.push(sum);
+        }// for
 
-        while(cur1 != nullptr){
-            push(&l3, cur1->val + remainder);
-            remainder = 0;
-            cur1 = cur1->next;
-        }// while
-    }
+        if(remainder != 0){
+            l3.push(remainder);
+        }// if
+    }// else if
 
     else{
         int sum = 0;
         int remainder = 0;
+        int i = 0;
 
-        while(cur1 != nullptr){
-            sum = cur1->val + cur2->val;
-            sum = sum+ remainder;
+        for(i = 0; i < size1; i++){
+            sum = l1.ith(i) + l2.ith(i);
+            sum = sum + remainder;
+
             if(sum - 10 >=0){
-                remainder = 1;
+                remainder = sum/10;
                 sum = sum - 10;
-            }
-
-            push(&l3, sum );
-            cur1 = cur1->next;
-            cur2 = cur2->next;
-        }// while
-
-        while(cur2 != nullptr){
-            push(&l3, cur2->val + remainder);
-            remainder = 0;
-            cur2 = cur2->next;
-        }// while
+            }// if
+            l3.push(sum);
+        }// for
+        for(;i<size2; i++){
+             sum = l2.ith(i)+ remainder;
+            if(sum - 10 >=0){
+                remainder = sum/10;
+                sum = sum - 10;
+            }// if
+            l3.push(sum);
+        }// for
+        if(remainder != 0){
+            l3.push(remainder);
+        }// if
     }// else
 
     return l3;
-}
-
-int main(){
-
-    node* l1 = nullptr;
-    node* l2 = nullptr;
-
-    insertNumber(&l1);
-    insertNumber(&l2);
-
-    node* l3 = addNumber(&l1, &l2);
-    printList(l3);
-    
-    return 0;
-}
+}// addNumber
